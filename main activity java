@@ -1,0 +1,21 @@
+package com.yourapp;
+
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+
+import java.util.Set;
+
+public class BluetoothManager {
+    private final BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+
+    public boolean isSmartPenConnected() {
+        if (adapter == null) return false;
+        Set<BluetoothDevice> devices = adapter.getBondedDevices();
+        for (BluetoothDevice device : devices) {
+            if (device.getName() != null && device.getName().toLowerCase().contains("smartpen")) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
