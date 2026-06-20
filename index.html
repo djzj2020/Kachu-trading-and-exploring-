@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kachu Trading & Exploring</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a3a2a 0%, #2d1f1f 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            text-align: center;
+            max-width: 600px;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            color: #90EE90;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            color: #e8d4d4;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .primary-btn {
+            padding: 15px 40px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .signup-btn {
+            background-color: #2d5016;
+            color: #90EE90;
+            border: 2px solid #90EE90;
+        }
+
+        .signup-btn:hover {
+            background-color: #90EE90;
+            color: #2d5016;
+            transform: scale(1.05);
+        }
+
+        .signin-btn {
+            background-color: #8B2323;
+            color: #FFB6C1;
+            border: 2px solid #FFB6C1;
+        }
+
+        .signin-btn:hover {
+            background-color: #FFB6C1;
+            color: #8B2323;
+            transform: scale(1.05);
+        }
+
+        .signin-options {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+        }
+
+        .signin-options.active {
+            display: flex;
+        }
+
+        .social-btn {
+            padding: 12px 30px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .facebook-btn {
+            background-color: #1877F2;
+            color: white;
+        }
+
+        .facebook-btn:hover {
+            background-color: #0A66C2;
+            transform: scale(1.02);
+        }
+
+        .google-btn {
+            background-color: #4285F4;
+            color: white;
+        }
+
+        .google-btn:hover {
+            background-color: #1F5FDD;
+            transform: scale(1.02);
+        }
+
+        .email-btn {
+            background-color: #8B2323;
+            color: #FFB6C1;
+            border: 1px solid #FFB6C1;
+        }
+
+        .email-btn:hover {
+            background-color: #A03030;
+        }
+
+        .phone-btn {
+            background-color: #2d5016;
+            color: #90EE90;
+            border: 1px solid #90EE90;
+        }
+
+        .phone-btn:hover {
+            background-color: #3d6b1f;
+        }
+
+        .features {
+            margin-top: 50px;
+            text-align: left;
+            background-color: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 5px;
+        }
+
+        .features h2 {
+            color: #90EE90;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .feature-item {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            border-left: 3px solid #8B2323;
+        }
+
+        .feature-item:nth-child(even) {
+            border-left-color: #90EE90;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .primary-btn {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏪 Kachu Trading & Exploring</h1>
+        <p class="subtitle">Your gateway to discovery and commerce</p>
+
+        <div class="button-group">
+            <button class="primary-btn signup-btn" onclick="alert('Sign Up page would load here')">
+                Sign Up
+            </button>
+            <button class="primary-btn signin-btn" onclick="toggleSignInOptions()">
+                Sign In
+            </button>
+        </div>
+
+        <div class="signin-options" id="signinOptions">
+            <button class="social-btn facebook-btn" onclick="alert('Facebook login')">
+                📘 Facebook
+            </button>
+            <button class="social-btn google-btn" onclick="alert('Google login')">
+                🔍 Google
+            </button>
+            <button class="social-btn email-btn" onclick="alert('Email login')">
+                ✉️ Email
+            </button>
+            <button class="social-btn phone-btn" onclick="alert('Phone login')">
+                📱 Phone Number
+            </button>
+        </div>
+
+        <div class="features">
+            <h2>Why Join Us?</h2>
+            <div class="feature-item">🌍 Explore unique products from around the world</div>
+            <div class="feature-item">💰 Trade and grow your business</div>
+            <div class="feature-item">🔒 Secure transactions and trusted sellers</div>
+            <div class="feature-item">🚀 Easy-to-use platform for everyone</div>
+        </div>
+    </div>
+
+    <script>
+        function toggleSignInOptions() {
+            const options = document.getElementById('signinOptions');
+            options.classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
