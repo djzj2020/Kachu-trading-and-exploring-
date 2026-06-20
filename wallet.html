@@ -663,7 +663,7 @@
                 txList.innerHTML = '<p style="color: #b0d4b0;">Loading transactions...</p>';
 
                 // Fetch transactions from Etherscan API
-                const apiKey = 'YourEtherscanAPIKey'; // Replace with actual API key
+                const apiKey = 'KF74MA9P8Y6FK3TYNSU95CP6UYBHEWE4Z9';
                 const apiUrl = `https://api.etherscan.io/api?module=account&action=txlist&address=${userAccount}&startblock=0&endblock=${blockNumber}&sort=desc&apikey=${apiKey}`;
 
                 const response = await fetch(apiUrl);
