@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kachu Trading & Exploring - Wallet</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a3a2a 0%, #2d1f1f 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px 0;
+            border-bottom: 2px solid #8B2323;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #90EE90;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        nav a:hover {
+            background-color: #90EE90;
+            color: #2d5016;
+        }
+
+        nav a.active {
+            background-color: #8B2323;
+            color: #FFB6C1;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #90EE90;
+        }
+
+        .wallet-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 2px solid #90EE90;
+            border-radius: 10px;
+            padding: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 20px rgba(144, 238, 144, 0.3);
+        }
+
+        .card h2 {
+            color: #90EE90;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .balance-display {
+            background-color: rgba(45, 80, 22, 0.3);
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .balance-label {
+            font-size: 0.9em;
+            color: #b0d4b0;
+            margin-bottom: 8px;
+        }
+
+        .balance-amount {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #90EE90;
+        }
+
+        .balance-usd {
+            font-size: 1em;
+            color: #b0d4b0;
+            margin-top: 8px;
+        }
+
+        .address-box {
+            background-color: rgba(45, 80, 22, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            word-break: break-all;
+            margin: 15px 0;
+            border: 1px solid #90EE90;
+        }
+
+        .qr-code {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .qr-code img {
+            max-width: 200px;
+            border: 2px solid #90EE90;
+            border-radius: 5px;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: #2d5016;
+            color: #90EE90;
+            border: 2px solid #90EE90;
+        }
+
+        .btn-primary:hover {
+            background-color: #90EE90;
+            color: #2d5016;
+        }
+
+        .btn-secondary {
+            background-color: #8B2323;
+            color: #FFB6C1;
+            border: 2px solid #FFB6C1;
+        }
+
+        .btn-secondary:hover {
+            background-color: #FFB6C1;
+            color: #8B2323;
+        }
+
+        .btn-danger {
+            background-color: #6B1515;
+            color: #FFB6C1;
+        }
+
+        .btn-danger:hover {
+            background-color: #8B2323;
+        }
+
+        .input-group {
+            margin: 15px 0;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            background-color: rgba(45, 80, 22, 0.3);
+            border: 1px solid #90EE90;
+            color: #90EE90;
+            border-radius: 5px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #6ba86b;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #FFB6C1;
+            box-shadow: 0 0 10px rgba(144, 238, 144, 0.3);
+        }
+
+        label {
+            color: #90EE90;
+            font-weight: 600;
+            display: block;
+            margin-top: 15px;
+        }
+
+        .status {
+            padding: 12px;
+            border-radius: 5px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .status.success {
+            background-color: rgba(45, 80, 22, 0.5);
+            border: 1px solid #90EE90;
+            color: #90EE90;
+        }
+
+        .status.error {
+            background-color: rgba(139, 35, 35, 0.5);
+            border: 1px solid #FFB6C1;
+            color: #FFB6C1;
+        }
+
+        .status.info {
+            background-color: rgba(45, 80, 22, 0.3);
+            border: 1px solid #90EE90;
+            color: #b0d4b0;
+        }
+
+        .transaction-item {
+            background-color: rgba(45, 80, 22, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 4px solid #90EE90;
+        }
+
+        .transaction-item.sent {
+            border-left-color: #FFB6C1;
+        }
+
+        .transaction-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .transaction-type {
+            font-weight: 600;
+            color: #90EE90;
+        }
+
+        .transaction-type.sent {
+            color: #FFB6C1;
+        }
+
+        .transaction-amount {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .transaction-amount.sent {
+            color: #FFB6C1;
+        }
+
+        .transaction-details {
+            font-size: 0.9em;
+            color: #b0d4b0;
+            margin-top: 8px;
+        }
+
+        .transaction-hash {
+            color: #90EE90;
+            word-break: break-all;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .transaction-hash:hover {
+            text-decoration: underline;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #2d1f1f;
+            margin: 5% auto;
+            padding: 30px;
+            border: 2px solid #90EE90;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+        }
+
+        .close {
+            color: #90EE90;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #FFB6C1;
+        }
+
+        .modal-title {
+            color: #90EE90;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .connect-status {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(45, 80, 22, 0.3);
+            border: 2px solid #90EE90;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .connected {
+            color: #90EE90;
+        }
+
+        .disconnected {
+            color: #FFB6C1;
+        }
+
+        @media (max-width: 768px) {
+            .wallet-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            nav {
+                gap: 10px;
+            }
+
+            nav a {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html">🏪 Home</a>
+        <a href="wallet.html" class="active">💰 Wallet</a>
+    </nav>
+
+    <div class="container">
+        <h1>💰 ETH Wallet</h1>
+        
+        <!-- Connection Status -->
+        <div class="connect-status" id="connectionStatus">
+            <span class="disconnected">❌ MetaMask Not Connected</span>
+        </div>
+
+        <!-- Connect MetaMask Button -->
+        <div style="text-align: center; margin-bottom: 30px;">
+            <button class="btn-primary" onclick="connectMetaMask()" id="connectBtn">
+                🦊 Connect MetaMask
+            </button>
+        </div>
+
+        <!-- Main Wallet Grid -->
+        <div class="wallet-grid">
+            <!-- Balance Card -->
+            <div class="card">
+                <h2>💵 Balance</h2>
+                <div class="balance-display">
+                    <div class="balance-label">Your ETH Balance</div>
+                    <div class="balance-amount" id="ethBalance">0.00 ETH</div>
+                    <div class="balance-usd" id="usdBalance">$0.00 USD</div>
+                </div>
+                <button class="btn-primary" onclick="refreshBalance()">🔄 Refresh</button>
+            </div>
+
+            <!-- Account Info Card -->
+            <div class="card">
+                <h2>👤 Account</h2>
+                <div class="address-box">
+                    <div style="color: #b0d4b0; margin-bottom: 8px;">Your Wallet Address:</div>
+                    <div id="walletAddress" style="font-size: 0.85em;">Not connected</div>
+                </div>
+                <button class="btn-secondary" onclick="copyAddress()">📋 Copy Address</button>
+                <button class="btn-danger" onclick="disconnectWallet()">🔌 Disconnect</button>
+            </div>
+
+            <!-- Receive Card -->
+            <div class="card">
+                <h2>📥 Receive ETH</h2>
+                <div class="qr-code" id="qrCodeContainer">
+                    <p style="color: #b0d4b0;">Connect MetaMask to generate QR code</p>
+                </div>
+                <button class="btn-secondary" onclick="openReceiveModal()">📲 Show Receive Details</button>
+            </div>
+
+            <!-- Send Card -->
+            <div class="card">
+                <h2>📤 Send ETH</h2>
+                <div class="input-group">
+                    <label>Recipient Address</label>
+                    <input type="text" id="recipientAddress" placeholder="0x...">
+                </div>
+                <div class="input-group">
+                    <label>Amount (ETH)</label>
+                    <input type="number" id="sendAmount" placeholder="0.0" step="0.0001" min="0">
+                </div>
+                <button class="btn-secondary" onclick="sendTransaction()">📤 Send</button>
+                <div id="sendStatus"></div>
+            </div>
+
+            <!-- Import Wallet Card -->
+            <div class="card">
+                <h2>🔑 Import Wallet</h2>
+                <div class="input-group">
+                    <label>Private Key</label>
+                    <textarea id="privateKey" placeholder="Enter your private key (0x...)" style="height: 80px;"></textarea>
+                </div>
+                <p style="color: #b0d4b0; font-size: 0.85em; margin-top: 10px;">⚠️ Never share your private key!</p>
+                <button class="btn-secondary" onclick="importWallet()">🔑 Import Wallet</button>
+                <div id="importStatus"></div>
+            </div>
+
+            <!-- Transaction History Card -->
+            <div class="card">
+                <h2>📜 Recent Transactions</h2>
+                <div id="transactionList" style="max-height: 400px; overflow-y: auto;">
+                    <p style="color: #b0d4b0;">Connect MetaMask to see transaction history</p>
+                </div>
+                <button class="btn-primary" onclick="loadTransactionHistory()">🔄 Load History</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Receive Modal -->
+    <div id="receiveModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeReceiveModal()">&times;</span>
+            <div class="modal-title">📥 Receive ETH</div>
+            <div class="qr-code" id="modalQrCode">
+                <p style="color: #b0d4b0;">Generating QR code...</p>
+            </div>
+            <div class="address-box" id="modalAddress">
+                Not connected
+            </div>
+            <button class="btn-secondary" onclick="copyModalAddress()" style="margin-top: 15px; width: 100%;">📋 Copy Address</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.10.0/dist/web3.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script>
+        let web3;
+        let userAccount;
+        let ethPrice = 0;
+
+        // Get ETH price from API
+        async function getEthPrice() {
+            try {
+                const response = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+                const data = await response.json();
+                ethPrice = data.ethereum.usd;
+            } catch (error) {
+                console.error('Error fetching ETH price:', error);
+            }
+        }
+
+        // Connect MetaMask
+        async function connectMetaMask() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                    userAccount = accounts[0];
+                    web3 = new Web3(window.ethereum);
+                    
+                    updateConnectionStatus();
+                    await refreshBalance();
+                    await loadTransactionHistory();
+                    generateQRCode();
+                    
+                    // Listen for account changes
+                    window.ethereum.on('accountsChanged', handleAccountChange);
+                    window.ethereum.on('chainChanged', () => window.location.reload());
+                } catch (error) {
+                    alert('Error connecting to MetaMask: ' + error.message);
+                }
+            } else {
+                alert('MetaMask is not installed. Please install it from https://metamask.io');
+            }
+        }
+
+        // Handle account changes
+        function handleAccountChange(accounts) {
+            if (accounts.length === 0) {
+                disconnectWallet();
+            } else {
+                userAccount = accounts[0];
+                refreshBalance();
+                loadTransactionHistory();
+                generateQRCode();
+            }
+        }
+
+        // Update connection status
+        function updateConnectionStatus() {
+            const statusEl = document.getElementById('connectionStatus');
+            const connectBtn = document.getElementById('connectBtn');
+            if (userAccount) {
+                statusEl.innerHTML = `<span class="connected">✅ Connected: ${userAccount.substring(0, 6)}...${userAccount.substring(38)}</span>`;
+                connectBtn.style.display = 'none';
+                document.getElementById('walletAddress').textContent = userAccount;
+            } else {
+                statusEl.innerHTML = `<span class="disconnected">❌ MetaMask Not Connected</span>`;
+                connectBtn.style.display = 'block';
+            }
+        }
+
+        // Refresh Balance
+        async function refreshBalance() {
+            if (!web3 || !userAccount) {
+                alert('Please connect MetaMask first');
+                return;
+            }
+
+            try {
+                const balanceWei = await web3.eth.getBalance(userAccount);
+                const balanceEth = web3.utils.fromWei(balanceWei, 'ether');
+                const balanceUsd = (parseFloat(balanceEth) * ethPrice).toFixed(2);
+                
+                document.getElementById('ethBalance').textContent = parseFloat(balanceEth).toFixed(4) + ' ETH';
+                document.getElementById('usdBalance').textContent = '$' + balanceUsd + ' USD';
+            } catch (error) {
+                alert('Error fetching balance: ' + error.message);
+            }
+        }
+
+        // Copy Address
+        function copyAddress() {
+            if (!userAccount) {
+                alert('Please connect MetaMask first');
+                return;
+            }
+            navigator.clipboard.writeText(userAccount);
+            alert('Address copied to clipboard!');
+        }
+
+        // Send Transaction
+        async function sendTransaction() {
+            if (!web3 || !userAccount) {
+                alert('Please connect MetaMask first');
+                return;
+            }
+
+            const recipient = document.getElementById('recipientAddress').value;
+            const amount = document.getElementById('sendAmount').value;
+            const statusEl = document.getElementById('sendStatus');
+
+            if (!recipient || !amount) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Please fill in all fields';
+                return;
+            }
+
+            if (!web3.utils.isAddress(recipient)) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Invalid recipient address';
+                return;
+            }
+
+            try {
+                statusEl.className = 'status info';
+                statusEl.textContent = '⏳ Sending transaction...';
+
+                const amountWei = web3.utils.toWei(amount, 'ether');
+                const tx = {
+                    from: userAccount,
+                    to: recipient,
+                    value: amountWei,
+                    gas: 21000
+                };
+
+                const txHash = await window.ethereum.request({
+                    method: 'eth_sendTransaction',
+                    params: [tx]
+                });
+
+                statusEl.className = 'status success';
+                statusEl.innerHTML = `✅ Transaction sent!<br><a href="https://etherscan.io/tx/${txHash}" target="_blank" style="color: #90EE90;">View on Etherscan</a>`;
+                
+                document.getElementById('recipientAddress').value = '';
+                document.getElementById('sendAmount').value = '';
+                
+                setTimeout(() => refreshBalance(), 2000);
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Error: ' + error.message;
+            }
+        }
+
+        // Generate QR Code
+        function generateQRCode() {
+            if (!userAccount) return;
+
+            const qrContainers = [
+                document.getElementById('qrCodeContainer'),
+                document.getElementById('modalQrCode')
+            ];
+
+            qrContainers.forEach(container => {
+                container.innerHTML = '';
+                QRCode.toCanvas(userAccount, {
+                    errorCorrectionLevel: 'H',
+                    type: 'image/png',
+                    quality: 0.95,
+                    margin: 1,
+                    color: {
+                        dark: '#90EE90',
+                        light: '#1a3a2a'
+                    }
+                }, (err, canvas) => {
+                    if (err) console.error(err);
+                    else container.appendChild(canvas);
+                });
+            });
+
+            document.getElementById('modalAddress').textContent = userAccount;
+        }
+
+        // Load Transaction History
+        async function loadTransactionHistory() {
+            if (!web3 || !userAccount) return;
+
+            try {
+                const blockNumber = await web3.eth.getBlockNumber();
+                const txList = document.getElementById('transactionList');
+                txList.innerHTML = '<p style="color: #b0d4b0;">Loading transactions...</p>';
+
+                // Fetch transactions from Etherscan API
+                const apiKey = 'YourEtherscanAPIKey'; // Replace with actual API key
+                const apiUrl = `https://api.etherscan.io/api?module=account&action=txlist&address=${userAccount}&startblock=0&endblock=${blockNumber}&sort=desc&apikey=${apiKey}`;
+
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                if (data.result && Array.isArray(data.result)) {
+                    const transactions = data.result.slice(0, 10); // Show last 10 transactions
+                    txList.innerHTML = '';
+
+                    transactions.forEach(tx => {
+                        const isSent = tx.from.toLowerCase() === userAccount.toLowerCase();
+                        const amount = web3.utils.fromWei(tx.value, 'ether');
+                        const timestamp = new Date(parseInt(tx.timeStamp) * 1000).toLocaleString();
+
+                        const txEl = document.createElement('div');
+                        txEl.className = `transaction-item ${isSent ? 'sent' : ''}`;
+                        txEl.innerHTML = `
+                            <div class="transaction-header">
+                                <span class="transaction-type ${isSent ? 'sent' : ''}">
+                                    ${isSent ? '📤 Sent' : '📥 Received'}
+                                </span>
+                                <span class="transaction-amount ${isSent ? 'sent' : ''}">${isSent ? '-' : '+'}${parseFloat(amount).toFixed(4)} ETH</span>
+                            </div>
+                            <div class="transaction-details">
+                                <div>To: ${isSent ? tx.to.substring(0, 6) + '...' + tx.to.substring(38) : tx.from.substring(0, 6) + '...' + tx.from.substring(38)}</div>
+                                <div>${timestamp}</div>
+                                <a href="https://etherscan.io/tx/${tx.hash}" target="_blank" class="transaction-hash">View on Etherscan →</a>
+                            </div>
+                        `;
+                        txList.appendChild(txEl);
+                    });
+                } else {
+                    txList.innerHTML = '<p style="color: #b0d4b0;">No transactions found</p>';
+                }
+            } catch (error) {
+                console.error('Error loading transactions:', error);
+                document.getElementById('transactionList').innerHTML = '<p style="color: #FFB6C1;">Error loading transactions. Please ensure an Etherscan API key is configured.</p>';
+            }
+        }
+
+        // Import Wallet
+        function importWallet() {
+            const statusEl = document.getElementById('importStatus');
+            const privateKey = document.getElementById('privateKey').value;
+
+            if (!privateKey) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Please enter a private key';
+                return;
+            }
+
+            try {
+                if (!web3) web3 = new Web3(window.ethereum);
+                
+                const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+                statusEl.className = 'status success';
+                statusEl.innerHTML = `✅ Wallet imported!<br>Address: ${account.address}`;
+                
+                document.getElementById('privateKey').value = '';
+                setTimeout(() => statusEl.textContent = '', 3000);
+            } catch (error) {
+                statusEl.className = 'status error';
+                statusEl.textContent = '❌ Error: Invalid private key';
+            }
+        }
+
+        // Disconnect Wallet
+        function disconnectWallet() {
+            userAccount = null;
+            web3 = null;
+            updateConnectionStatus();
+            document.getElementById('ethBalance').textContent = '0.00 ETH';
+            document.getElementById('usdBalance').textContent = '$0.00 USD';
+            document.getElementById('transactionList').innerHTML = '<p style="color: #b0d4b0;">Connect MetaMask to see transaction history</p>';
+        }
+
+        // Modal Functions
+        function openReceiveModal() {
+            if (!userAccount) {
+                alert('Please connect MetaMask first');
+                return;
+            }
+            document.getElementById('receiveModal').style.display = 'block';
+        }
+
+        function closeReceiveModal() {
+            document.getElementById('receiveModal').style.display = 'none';
+        }
+
+        function copyModalAddress() {
+            navigator.clipboard.writeText(userAccount);
+            alert('Address copied to clipboard!');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('receiveModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            await getEthPrice();
+            // Check if already connected
+            if (typeof window.ethereum !== 'undefined') {
+                const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+                if (accounts.length > 0) {
+                    userAccount = accounts[0];
+                    web3 = new Web3(window.ethereum);
+                    updateConnectionStatus();
+                    await refreshBalance();
+                    await loadTransactionHistory();
+                    generateQRCode();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
